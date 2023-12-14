@@ -20,7 +20,9 @@ void _exitshell(char **argv, char *input, int index);
 void _printenv(char **argv, char *token, int *count, int *index);
 char **_tokenize(char *input, char *token, char *token_copy,
 		int *token_count, int *index);
-void _fork(char **argv, int *index, int *token_count, char *token_copy);
+void _fork(char **argv, int *index, int *token_count,
+		char *token_copy, int line_count);
 void _startshell(void);
 int handlespace(char *input);
+void _printInteger(int value);
 #endif

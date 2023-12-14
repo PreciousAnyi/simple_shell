@@ -104,7 +104,8 @@ char **_tokenize(char *input, char *token, char *token_copy,
  * @token_count: total number of tokens
  * @token_copy: duplicate of token.
  */
-void _fork(char **argv, int *index, int *token_count, char *token_copy)
+void _fork(char **argv, int *index, int *token_count,
+		char *token_copy, int line_count)
 {
 	pid_t pid;
 	int status;
@@ -116,7 +117,9 @@ void _fork(char **argv, int *index, int *token_count, char *token_copy)
 	{
 		if ((execve(argv[0], argv, NULL) == -1))
 		{
-			_printString("./shell: No such file or directory");
+			_printString(argv[0]);
+			_printString(": ");
+			_printInteger(line_count);
 			perror("execve");
 			exit(EXIT_FAILURE);
 		}
@@ -144,7 +147,7 @@ void _startshell(void)
 	ssize_t bytes;
 	char **argv;
 	char *token, *token_copy, *input;
-	int token_count, index;
+	int token_count, index, line_count;
 	size_t len;
 
 	input = NULL;
@@ -153,6 +156,7 @@ void _startshell(void)
 	index = 0;
 	token_count = 0;
 	token = NULL;
+	line_count = 1;
 
 	_printString("#cisfun$ ");
 	while ((bytes = getline(&input, &len, stdin) != -1))
@@ -172,7 +176,8 @@ void _startshell(void)
 			continue;
 		}
 		/** Handles fork **/
-		_fork(argv, &index, &token_count, token_copy);
+		_fork(argv, &index, &token_count, token_copy, line_count);
+		line_count += 1;
 	}
 	free(input);
 	_printString("\n");

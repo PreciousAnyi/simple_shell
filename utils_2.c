@@ -22,3 +22,26 @@ int handlespace(char *input)
 	}
 	return (0);
 }
+/**
+ * _printInteger - prints integer to stdout
+ * @value: integer value to be printed
+ */
+void _printInteger(int value)
+{
+	if (value < 0)
+	{
+	_putchar('-');
+	value = -value;
+	}
+
+	if (value == 0)
+	{
+		_putchar('0');
+	}
+	else
+	{
+		/** Recursively print each digit **/
+		_printInteger(value / 10);
+		_putchar('0' + value % 10);
+	}
+}

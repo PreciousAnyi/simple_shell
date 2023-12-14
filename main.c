@@ -4,7 +4,7 @@
  *
  * Return: returns zero
  */
-int main(void)
+int main()
 {
 	_startshell();
 	return (0);
