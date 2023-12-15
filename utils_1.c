@@ -20,9 +20,7 @@ void _exitshell(char **argv, char *input, int index)
 				free(argv[b]);
 			}
 			free(argv);
-			_printString("Exiting the shell.....");
-			_putchar('\n');
-			exit(0);
+			exit(EXIT_SUCCESS);
 		}
 	}
 }
