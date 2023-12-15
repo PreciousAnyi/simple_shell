@@ -82,7 +82,7 @@ char **_tokenize(char *input, char *token, char *token_copy,
 		token = strtok(NULL, delimeter);
 	}
 
-	argv = (char **)malloc((*token_count + 1));
+	argv = (char **)malloc((*token_count + 1) * sizeof(char *));
 	if (argv == NULL)
 		perror("error");
 
@@ -95,6 +95,7 @@ char **_tokenize(char *input, char *token, char *token_copy,
 		token = strtok(NULL, delimeter);
 	}
 	argv[*index] = NULL;
+	free(token_copy);
 	return (argv);
 }
 /**
@@ -104,8 +105,7 @@ char **_tokenize(char *input, char *token, char *token_copy,
  * @token_count: total number of tokens
  * @token_copy: duplicate of token.
  */
-void _fork(char **argv, int *index, int *token_count,
-		char *token_copy, int line_count)
+void _fork(char **argv, int *index, int *token_count)
 {
 	pid_t pid;
 	int status;
@@ -117,10 +117,7 @@ void _fork(char **argv, int *index, int *token_count,
 	{
 		if ((execve(argv[0], argv, NULL) == -1))
 		{
-			_printString(argv[0]);
-			_printString(": ");
-			_printInteger(line_count);
-			perror("execve");
+			perror("./shell");
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -134,7 +131,6 @@ void _fork(char **argv, int *index, int *token_count,
 	}
 
 	free(argv);
-	free(token_copy);
 	*index = 0;
 	*token_count = 0;
 	_printString("#cisfun$ ");
@@ -176,9 +172,8 @@ void _startshell(void)
 			continue;
 		}
 		/** Handles fork **/
-		_fork(argv, &index, &token_count, token_copy, line_count);
+		_fork(argv, &index, &token_count);
 		line_count += 1;
 	}
 	free(input);
-	_printString("\n");
 }

@@ -30,18 +30,20 @@ void _printInteger(int value)
 {
 	if (value < 0)
 	{
-	_putchar('-');
-	value = -value;
+		_putchar('-');
+		value = -value;
 	}
-
 	if (value == 0)
 	{
 		_putchar('0');
-	}
-	else
+	} else
 	{
 		/** Recursively print each digit **/
 		_printInteger(value / 10);
-		_putchar('0' + value % 10);
+		/** Print the current digit if it is non-zero**/
+		if (value % 10 != 0 || value / 10 != 0)
+		{
+			_putchar('0' + value % 10);
+		}
 	}
 }
