@@ -59,12 +59,8 @@ void _startshellN(void)
 	int token_count, index;
 	size_t len;
 
-	input = NULL;
-	token_copy = NULL;
-	len = 0;
-	index = 0;
-	token_count = 0;
-	token = NULL;
+	input = token_copy = token = NULL;
+	len = index = token_count = 0;
 
 	while ((bytes = getline(&input, &len, stdin) != -1))
 	{

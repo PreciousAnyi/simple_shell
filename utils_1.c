@@ -12,15 +12,18 @@ void _exitshell(char **argv, char *input, int index)
 
 	if (argv[0] == NULL || _strcmp(argv[0], "exit") == 0)
 	{
-		free(input);
-		for (b = 0; b < index; b++)
+		if (argv[1] == NULL)
 		{
-			free(argv[b]);
+			free(input);
+			for (b = 0; b < index; b++)
+			{
+				free(argv[b]);
+			}
+			free(argv);
+			_printString("Exiting the shell.....");
+			_putchar('\n');
+			exit(EXIT_SUCCESS);
 		}
-		free(argv);
-		_printString("Exiting the shell.....");
-		_putchar('\n');
-		exit(EXIT_SUCCESS);
 	}
 }
 /**
@@ -146,12 +149,8 @@ void _startshell(void)
 	int token_count, index;
 	size_t len;
 
-	input = NULL;
-	token_copy = NULL;
-	len = 0;
-	index = 0;
-	token_count = 0;
-	token = NULL;
+	input = token_copy = token = NULL;
+	len = index = token_count = 0;
 
 	_printString("$ ");
 	while ((bytes = getline(&input, &len, stdin) != -1))
