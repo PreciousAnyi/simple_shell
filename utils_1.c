@@ -54,7 +54,7 @@ void _printenv(char **argv, char *token_copy, int *token_count, int *index)
 	*token_count = 0;
 	*index = 0;
 	env = environ;
-	_printString("#cisfun$ ");
+	_printString("$ ");
 }
 /**
  * _tokenize - breaks array of characters into tokens
@@ -133,7 +133,7 @@ void _fork(char **argv, int *index, int *token_count)
 	free(argv);
 	*index = 0;
 	*token_count = 0;
-	_printString("#cisfun$ ");
+	_printString("$ ");
 }
 /**
  * _startshell - begins simple shell program
@@ -154,7 +154,7 @@ void _startshell(void)
 	token = NULL;
 	line_count = 1;
 
-	_printString("#cisfun$ ");
+	_printString("$ ");
 	while ((bytes = getline(&input, &len, stdin) != -1))
 	{
 		if (handlespace(input))

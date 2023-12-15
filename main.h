@@ -24,4 +24,8 @@ void _fork(char **argv, int *index, int *token_count);
 void _startshell(void);
 int handlespace(char *input);
 void _printInteger(int value);
+void _forkN(char **argv, int *index, int *token_count);
+void _startshellN(void);
+void _printenvN(char **argv, char *token_copy, int *token_count, int *index);
+int handlespaceN(char *input);
 #endif

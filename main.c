@@ -4,8 +4,15 @@
  *
  * Return: returns zero
  */
-int main()
+int main(void)
 {
-	_startshell();
+	/** Checks for interactive and non interactive mode **/
+	if (isatty(STDIN_FILENO))
+	{
+		_startshell();
+	} else
+	{
+		_startshellN();
+	}
 	return (0);
 }
