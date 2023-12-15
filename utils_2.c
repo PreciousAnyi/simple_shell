@@ -11,7 +11,7 @@ int handlespace(char *input)
 
 	for (i = 0; input[i] != '\0'; i++)
 	{
-		if (!(input[i] == ' ' || input[i] == '\t' || input[i] == '\n'
+		if (!(input[i] == ' ' || input[i] == '\t'
 					|| input[i] == '\v' || input[i] == '\f' || input[i] == '\r'))
 			break;
 	}
@@ -56,7 +56,7 @@ void _startshellN(void)
 	ssize_t bytes;
 	char **argv;
 	char *token, *token_copy, *input;
-	int token_count, index, line_count;
+	int token_count, index;
 	size_t len;
 
 	input = NULL;
@@ -65,7 +65,6 @@ void _startshellN(void)
 	index = 0;
 	token_count = 0;
 	token = NULL;
-	line_count = 1;
 
 	while ((bytes = getline(&input, &len, stdin) != -1))
 	{
@@ -73,19 +72,21 @@ void _startshellN(void)
 			continue;
 		/** Handles tokenization**/
 		argv = _tokenize(input, token, token_copy, &token_count, &index);
-
 		/** Handles exit built-in  **/
 		_exitshell(argv, input, index);
-
 		/** Handles env built-in non interactive **/
 		if (_strcmp(argv[0], "env") == 0)
 		{
 			_printenvN(argv, token_copy, &token_count, &index);
 			continue;
 		}
+		if ((execve(argv[0], argv, NULL) == -1))
+		{
+			perror("./hsh");
+			exit(EXIT_SUCCESS);/** exit shell if command not found**/
+		}
 		/** Handles fork for non interactive**/
 		_forkN(argv, &index, &token_count);
-		line_count += 1;
 	}
 	free(input);
 }

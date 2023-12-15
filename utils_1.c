@@ -10,7 +10,7 @@ void _exitshell(char **argv, char *input, int index)
 {
 	int b;
 
-	if (_strcmp(argv[0], "exit") == 0)
+	if (argv[0] == NULL || _strcmp(argv[0], "exit") == 0)
 	{
 		free(input);
 		for (b = 0; b < index; b++)
@@ -117,8 +117,8 @@ void _fork(char **argv, int *index, int *token_count)
 	{
 		if ((execve(argv[0], argv, NULL) == -1))
 		{
-			perror("./shell");
-			exit(EXIT_FAILURE);
+			perror("./hsh");
+			exit(EXIT_SUCCESS);
 		}
 	}
 	else
@@ -143,7 +143,7 @@ void _startshell(void)
 	ssize_t bytes;
 	char **argv;
 	char *token, *token_copy, *input;
-	int token_count, index, line_count;
+	int token_count, index;
 	size_t len;
 
 	input = NULL;
@@ -152,7 +152,6 @@ void _startshell(void)
 	index = 0;
 	token_count = 0;
 	token = NULL;
-	line_count = 1;
 
 	_printString("$ ");
 	while ((bytes = getline(&input, &len, stdin) != -1))
@@ -161,19 +160,21 @@ void _startshell(void)
 			continue;
 		/** Handles tokenization**/
 		argv = _tokenize(input, token, token_copy, &token_count, &index);
-
 		/** Handles exit built-in  **/
 		_exitshell(argv, input, index);
-
 		/** Handles env built-in **/
 		if (_strcmp(argv[0], "env") == 0)
 		{
 			_printenv(argv, token_copy, &token_count, &index);
 			continue;
 		}
+		if ((execve(argv[0], argv, NULL) == -1))
+		{
+			perror("./hsh");
+			exit(EXIT_SUCCESS);/** exit shell if command not found**/
+		}
 		/** Handles fork **/
 		_fork(argv, &index, &token_count);
-		line_count += 1;
 	}
 	free(input);
 }
