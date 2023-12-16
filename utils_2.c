@@ -76,12 +76,7 @@ void _startshellN(void)
 			_printenvN(argv, token_copy, &token_count, &index);
 			continue;
 		}
-		if ((execve(argv[0], argv, NULL) == -1))
-		{
-			perror("./hsh");
-			exit(EXIT_SUCCESS);/** exit shell if command not found**/
-		}
-		/** Handles fork for non interactive**/
+		/** Handles fork for non interractive **/
 		_forkN(argv, &index, &token_count);
 	}
 	free(input);
@@ -97,8 +92,8 @@ void _startshellN(void)
 void _forkN(char **argv, int *index, int *token_count)
 {
 	pid_t pid;
-	int status;
 	int b;
+	int status;
 
 	pid = fork();
 
@@ -112,7 +107,7 @@ void _forkN(char **argv, int *index, int *token_count)
 	}
 	else
 	{
-		wait(&status);
+		waitpid(pid, &status, 0);
 	}
 	for (b = 0; b < *index; b++)
 	{

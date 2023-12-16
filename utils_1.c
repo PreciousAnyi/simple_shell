@@ -20,7 +20,17 @@ void _exitshell(char **argv, char *input, int index)
 				free(argv[b]);
 			}
 			free(argv);
-			exit(EXIT_SUCCESS);
+			exit(2);
+		}
+	       	else
+		{
+			free(input);
+			for (b = 0; b < index; b++)
+			{
+				free(argv[b]);
+			}
+			free(argv);
+			exit(0);
 		}
 	}
 }
@@ -109,8 +119,8 @@ char **_tokenize(char *input, char *token, char *token_copy,
 void _fork(char **argv, int *index, int *token_count)
 {
 	pid_t pid;
-	int status;
 	int b;
+	int status;
 
 	pid = fork();
 
@@ -119,12 +129,12 @@ void _fork(char **argv, int *index, int *token_count)
 		if ((execve(argv[0], argv, NULL) == -1))
 		{
 			perror("./hsh");
-			exit(EXIT_SUCCESS);
+			exit(EXIT_FAILURE);
 		}
 	}
 	else
 	{
-		wait(&status);
+		waitpid(pid, &status, 0);
 	}
 	for (b = 0; b < *index; b++)
 	{
@@ -164,11 +174,6 @@ void _startshell(void)
 		{
 			_printenv(argv, token_copy, &token_count, &index);
 			continue;
-		}
-		if ((execve(argv[0], argv, NULL) == -1))
-		{
-			perror("./hsh");
-			exit(EXIT_SUCCESS);/** exit shell if command not found**/
 		}
 		/** Handles fork **/
 		_fork(argv, &index, &token_count);
