@@ -11,8 +11,7 @@ int handlespaceN(char *input)
 
 	for (i = 0; input[i] != '\0'; i++)
 	{
-		if (!(input[i] == ' ' || input[i] == '\t'
-					|| input[i] == '\v' || input[i] == '\f' || input[i] == '\r'))
+		if (!(input[i] == ' ' || input[i] == '\t'|| input[i] == '\n' || input[i] == '\v' || input[i] == '\f' || input[i] == '\r'))
 			break;
 	}
 	if (input[i] == '\0')
